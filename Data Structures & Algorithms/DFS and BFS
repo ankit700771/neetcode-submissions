@@ -1,0 +1,95 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+void DFS(unordered_map<int, vector<int>>& adj, vector<bool> &visited, vector<int> &ans, int u) {
+    if(visited[u]) {
+        return;
+    }
+    
+    visited[u] = true;
+    ans.push_back(u);
+    
+    for(auto v: adj[u]) {
+        if(!visited[v]) {
+            DFS(adj, visited, ans, v);
+        }
+    }
+}  
+void BFS(unordered_map<int, vector<int>>& adj, int u, vector<int> &visited, vector<int>&result) {
+    queue<int> q;
+    
+    q.push(u);
+    visited[u] = true;
+    result.push_back(u);
+    
+    while(!q.empty()) {
+        int temp = q.front();
+        q.pop();
+        
+        for(auto v: adj[temp]) {
+            if(!visited[v]) {
+                q.push(v);
+                visited[v] = true;
+            }
+        }
+    }
+}
+
+int main() {
+    int n = 7;
+    vector<vector<int>> rel = {{0, 1},
+        {0, 2},
+        {1, 3},
+        {1, 4},
+        {2, 5},
+        {2, 6}
+    };
+    
+    unordered_map<int, vector<int>> adj;
+    
+    for(vector<int>& temp: rel) {
+        int v = temp[0];
+        int u = temp[1];
+        
+        adj[u].push_back(v);
+    }
+    
+    
+    for(auto &ad: adj) {
+        cout<<ad.first<<" --> ";
+        for(auto& x : ad.second) {
+            cout<< x <<" ";
+        }
+        cout<<endl;
+    }
+    
+    cout<<endl;
+    cout << "DFS Algorithm : "<< endl;
+    
+    vector<int>result;
+    vector<bool>visited(n, false);
+   
+   for(int i = 0; i<n; i++) {
+       DFS(adj, visited, result, i);
+   } 
+    
+    for(auto x: result) {
+        cout<< x <<" ";
+    }
+    
+    
+    cout<<endl;
+    cout<<"BFS Algorith : "<<endl;
+    
+    vector<int>BFS_Result;
+    vector<int>BFS_Visited(n, false);
+    
+    for(int i = 0; i < n; i++) {
+        BFS(adj, i, BFS_Visited, BFS_Result);
+    }
+    
+    for(auto x: BFS_Result) {
+        cout<<x<<" ";
+    }
+    
+}
