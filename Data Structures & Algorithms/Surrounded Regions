@@ -1,0 +1,63 @@
+class Solution {
+public:
+
+    int n;
+    int m;
+
+    void DFS(vector<vector<char>>& board, vector<vector<int>> &visited, int row, int col) {
+        if (row < 0 || row >= n || col < 0 || col >= m)
+            return;
+
+        if (board[row][col] == 'X' || visited[row][col])
+            return;
+
+        visited[row][col] = 1;
+
+        DFS(board, visited, row+1, col);
+        DFS(board, visited, row, col+1);
+        DFS(board, visited, row, col-1);
+        DFS(board, visited, row-1, col);
+    }
+
+    void solve(vector<vector<char>>& board) {
+        n = board.size(); // row
+        m = board[0].size(); // col
+
+        vector<vector<int>>visited(n, vector<int>(m, 0));
+
+        // First column and last column
+        for (int i = 0; i < n; i++) {
+
+            if (board[i][0] == 'O' && !visited[i][0]) {
+                DFS(board, visited, i, 0);
+            }
+
+            if (board[i][m - 1] == 'O' && !visited[i][m - 1]) {
+                DFS(board, visited, i, m - 1);
+            }
+        }
+
+        // First row and last row
+        for (int j = 0; j < m; j++) {
+
+            if (board[0][j] == 'O' && !visited[0][j]) {
+                DFS(board, visited, 0, j);
+            }
+
+            if (board[n - 1][j] == 'O' && !visited[n - 1][j]) {
+                DFS(board, visited, n - 1, j);
+            }
+        }
+
+
+        for(int i = 0; i<n; i++) {
+            for(int j = 0; j<m; j++) {
+                if(visited[i][j] == 0) {
+                    board[i][j] = 'X';
+                }
+            }
+        }
+
+
+    }
+};
